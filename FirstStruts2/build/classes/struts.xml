@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC 
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" 
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+    
+<struts>
+			
+	<!-- 多个配置文件的解决方案 -->
+	<include file= "login.xml"></include>
+	<include file= "hello.xml"></include>
+	
+	<package name="timer" namespace="/" extends="struts-default">
+		<interceptors>
+			<interceptor name="timerIntercepter" class="com.lxw.intercepter.TimerIntercepter"></interceptor>
+		</interceptors>
+	
+		<action name="timer" class="com.lxw.action.Timer">
+			<result>/result.jsp</result>
+			<!-- 先引用默认拦截器栈，再引用自己的拦截器 -->
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<!--引用拦截器 -->
+			<interceptor-ref name="timerIntercepter"></interceptor-ref>
+		</action>
+	</package>
+	
+	<!-- 更改struts唯一后缀,改了之后原来acion后缀不可用且必须加此后缀， 不设置此参数时，action和空都可以-->
+	<!-- <constant name="struts.action.extension" value="html"></constant> -->
+	
+	<!-- 使用叹号访问方法 true -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="flase"></constant>
+	
+</struts>

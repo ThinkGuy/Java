@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC 
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" 
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="defaults" namespace="/" extends="struts-default">
+		<!-- 注册拦截器 -->
+		<interceptors>
+			<interceptor name="auth" class="com.lxw.intercepter.AuthIntercepter"></interceptor>
+			<!-- 定义自己的拦截器栈 -->
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="auth"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		
+		<!-- 默认action -->
+		<default-action-ref name="index"></default-action-ref>
+		
+		<action name="index">
+			<result>/error.jsp</result>
+		</action>
+		
+		<action name="auth">
+			<!-- 引用自己的拦截器栈 -->
+			<interceptor-ref name="myStack"></interceptor-ref>
+			<result>/result.jsp</result>
+			<result name="login">/login.jsp</result>
+		</action>
+		
+		<action name="login" class="com.lxw.action.Login">
+			
+			<result>/result.jsp</result>
+			<result name="error">/login.jsp</result>
+			<result name="login">/login.jsp</result>
+			
+			<!-- input：当类型转换错误是返回input -->
+			<result name="input">/login.jsp</result>
+		</action>
+		
+	</package>
+</struts>
