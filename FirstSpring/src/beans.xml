@@ -1,0 +1,7 @@
+<beans>
+	<bean id="u" class="com.lxw.dao.impl.UserDAOImpl" />
+	<bean id="userService" class="com.lxw.service.UserService" >
+		<property name="userDAO" bean="u"/>
+	</bean>
+	
+</beans>
