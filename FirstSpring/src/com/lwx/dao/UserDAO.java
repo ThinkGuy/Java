@@ -8,6 +8,6 @@ import com.lwx.model.User;
  *
  */
 public interface UserDAO {
-
+//
 	public void save(User user);
 }
