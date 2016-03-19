@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +28,9 @@ public class WebOfFuture {
 	 
 	public static final String PATHOFDEMAND = "E:/HUAWEISoftCraft2016/test-case"
 			+ "/case/demand.csv";
+	public static final String PATHOFRESULT = "E:/HUAWEISoftCraft2016/test-case"
+			+ "/case/sample_result.csv";
+	
 	/**
 	 * 图。
 	 */
@@ -45,6 +50,10 @@ public class WebOfFuture {
 	 */
 	private int destination;
 	/**
+	 * 权值最小路径。
+	 */
+	private String minWeightline = "";
+	/**
 	 * 必须经过的点V'。
 	 */
 	private ArrayList<Integer> v = new ArrayList<>();
@@ -54,6 +63,7 @@ public class WebOfFuture {
 	 */
 	public void readMap() {
 		try {
+			
 			BufferedReader reader = new BufferedReader(new FileReader(new File(
 					PATHOFMAP)));
 
@@ -171,11 +181,11 @@ System.out.println(v);
 		
 		for (ArrayList<Integer> pointLine : lineList) {
 			int weight = 0;
-			line = "";
+			minWeightline = "";
 			for (int i=0; i<pointLine.size()-1; i++) {
 				Integer integer = pointLine.get(i);
 				Integer sInteger = pointLine.get(i+1);
-				line = line + map.get(integer).get(sInteger).linkID + "|";
+				minWeightline = minWeightline + map.get(integer).get(sInteger).linkID + "|";
 				weight = weight + map.get(integer).get(sInteger).weight;
 			}
 			
@@ -184,8 +194,25 @@ System.out.println(v);
 System.out.println(pointLine);
 			}
 		}
-System.out.println(line);
+System.out.println(minWeightline);
 System.out.println(minWeight);
+	}
+	
+	/**
+	 * 最终路线写入文件。
+	 */
+	public void writeLine() {
+		minWeightline = minWeightline.substring(0,minWeightline.length()-1);
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
+					PATHOFRESULT)));
+			writer.write(minWeightline.trim());
+			
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("读写文件出错！");
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -195,6 +222,7 @@ System.out.println(minWeight);
 		webOfFuture.readDemand();
 		webOfFuture.readMap();
 		webOfFuture.traverseMap();
+		webOfFuture.writeLine();
 		
 		System.out.println("共耗时"+ (System.currentTimeMillis()-startTime) + "ms");
 		
