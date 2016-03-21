@@ -37,7 +37,7 @@ long startTime = System.currentTimeMillis();
 	/**
 	 * 深度。
 	 */
-	public static final int DEPTH = 8;
+	public static final int DEPTH = 9;
 	
 
     // **************** 私有变量
