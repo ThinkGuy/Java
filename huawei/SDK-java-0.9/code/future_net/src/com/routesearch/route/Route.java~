@@ -64,9 +64,9 @@ public final class Route {
 		lines.add(source);
 		
 		//改造深度优先。
-//		dfs(source);
+		dfs(source);
 		//广度优先。
-		bfs(source);
+//		bfs(source);
 		
 //        if (map.size() > 20) {
 //            dfs(source);
