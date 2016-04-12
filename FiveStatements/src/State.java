@@ -3,20 +3,20 @@
  * @author 刘鑫伟
  *
  */
-public class Statement {
+public class State {
 	/** 标识 */
 	private String name;
 
 	/*
 	 * 默认构造函数。
 	 */
-	public Statement() {}
+	public State() {}
 	
 	/**
 	 * 带参构造函数。
 	 * @param name
 	 */
-	public Statement(String name) {
+	public State(String name) {
 		super();
 		this.name = name;
 	}
@@ -34,6 +34,13 @@ public class Statement {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return name;
+	}
 	
 }
