@@ -3,31 +3,31 @@ import java.util.Queue;
 import java.util.Scanner;
 
 /**
- * 五状态。
- * @author 刘鑫伟
+ * FiveStates.
+ * @author Liu, xinwei
  *
  */
 public class FiveStates {
 	private Scanner in = new Scanner(System.in);
-	/** 创建状态 */
+	/** New */
 	private Queue<State> newQueue = new LinkedList<State>();
-	/** 就绪状态。*/
+	/** Ready*/
 	private Queue<State> ready = new LinkedList<State>();
-	/** 运行状态。*/
+	/** Running*/
 	private Queue<State> running = new LinkedList<State>();
-	/** 阻塞状态。*/
+	/** Blocked*/
 	private Queue<State> blocked = new LinkedList<State>();
-	/** 退出状态  */
+	/** Exit  */
 	private Queue<State> exit = new LinkedList<State>();
 	
 	/**
 	 * create a state.
 	 */
 	public void create() {
-		System.out.println("请输入您要创建的命令:");
+		System.out.println("please input demand:");
 		State state = new State(in.next());
 		newQueue.add(state);
-		System.out.println("命令<" + state.getName() + ">已经被创建。");
+		System.out.println("demand<" + state.getName() + ">has been created.");
 	}
 	
 	/**
@@ -42,6 +42,11 @@ public class FiveStates {
 	 * Ready to Running.
 	 */
 	public void dispatch() {
+		if (running.size() > 0) {
+			System.out.println("there is a state running!");
+			return;
+		}
+		
 		State state = ready.poll();
 		judge(running, state);
 	}
@@ -52,6 +57,8 @@ public class FiveStates {
 	public void timeout() {
 		State state = running.poll();
 		judge(ready, state);
+		//dispatch automatic.
+		dispatch();
 		
 	}
 	
@@ -61,15 +68,20 @@ public class FiveStates {
 	public void eventWait() {
 		State state = running.poll();
 		judge(blocked, state);
-		
+		//dispatch automatic.
+		dispatch();
 	}
 	
 	/**
-	 * Blocked to Running.
+	 * Blocked to Ready.
 	 */
 	public void eventOccurs() {
 		State state = blocked.poll();
-		judge(running, state);
+		judge(ready, state);
+		
+		if (running.size() == 0 && ready.size() > 0) {
+			dispatch();
+		}
 	}
 	
 	/**
@@ -78,10 +90,12 @@ public class FiveStates {
 	public void release() {
 		State state = running.poll();
 		judge(exit, state);
+		//dispatch automatic.
+		dispatch();
 	}
 	
 	/**
-	 * 判断处理。
+	 * Judge.
 	 * @param queue
 	 * @param state
 	 */
@@ -92,10 +106,10 @@ public class FiveStates {
 	}
 	
 	/**
-	 * 显示各个状态。
+	 * show all states.
 	 */
 	public void showStates() {
-		System.out.println("目前各状态内容如下:");
+		System.out.println("The states Now:");
 		System.out.println("New" + newQueue.toString());
 		System.out.println("Ready" + ready.toString());
 		System.out.println("Running" + running.toString());
@@ -104,20 +118,16 @@ public class FiveStates {
 	}
 	
 	/**
-	 * 显示窗口。
+	 * show the window.
 	 */
 	public void showWindow() {
-		System.out.println("********************五状态系统*********************");
-		System.out.println("1.创建                                         2.提交                                       3.调度");
-		System.out.println("4.超时                                         5.等待事件                               6.事件发生");
-		System.out.println("7.释放                                         8.显示各状态                           0.退出系统");
-		System.out.println("************************************************");
-		
-		
+		System.out.println("***********************************FiveStates***********************************************");
+		System.out.println("1.Create   2.Admit    3.Dispatch   4.TimeOut   5.EventOccurs  6.EventWait  7.release  0.Exit");
+		System.out.println("********************************************************************************************");
 	}
 	
 	/**
-	 * 控制器。
+	 * controllor.
 	 */
 	public void control() {
 		showWindow();
@@ -133,19 +143,19 @@ public class FiveStates {
 				case "5": eventWait(); break;
 				case "6": eventOccurs(); break;
 				case "7": release(); break;
-				case "8": showStates(); break;
 				case "0": break;
 				default : {
 					showWindow();
-					System.out.println("您的命令有误，请重新输入:");
+					System.out.println("Your demand is wrong, please input again:");
 					continue;
 				}
 			}
 			
+			showStates();
 			showWindow();
 		}
 		
-		System.out.println("欢迎再次使用，谢谢。");
+		System.out.println("Thanks for use.");
 	}
 	public static void main(String[] args) {
 		FiveStates fiveStates = new FiveStates();

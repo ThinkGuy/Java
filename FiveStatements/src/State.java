@@ -1,19 +1,19 @@
 /**
- * 进程。
- * @author 刘鑫伟
+ * State.
+ * @author Liu, xinwei
  *
  */
 public class State {
-	/** 标识 */
+	/** name */
 	private String name;
 
 	/*
-	 * 默认构造函数。
+	 * default construct.
 	 */
 	public State() {}
 	
 	/**
-	 * 带参构造函数。
+	 * construct.
 	 * @param name
 	 */
 	public State(String name) {
